@@ -1,0 +1,12 @@
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\bin\Debug\net7.0\CLIMenuSystem.deps.json
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\bin\Debug\net7.0\CLIMenuSystem.dll
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\bin\Debug\net7.0\CLIMenuSystem.pdb
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.csproj.AssemblyReference.cache
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.AssemblyInfoInputs.cache
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.AssemblyInfo.cs
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.csproj.CoreCompileInputs.cache
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.dll
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\refint\CLIMenuSystem.dll
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\CLIMenuSystem.pdb
+C:\Users\Felix\Desktop\Portfolio\Checkers\CSharpCheckers\CLIMenuSystem\obj\Debug\net7.0\ref\CLIMenuSystem.dll
