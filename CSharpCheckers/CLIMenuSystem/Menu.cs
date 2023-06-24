@@ -30,7 +30,7 @@ public class Menu
         string input = "";
         while (input != "E")
         {
-            //Console.Clear();
+            Console.Clear();
             Console.WriteLine("\n" + _title);
             foreach (MenuItem item in _menuItems)
             {
@@ -42,14 +42,15 @@ public class Menu
                 Console.WriteLine(item);
             }
             Console.Write("Enter your input: ");
-            input = Console.ReadLine().ToUpper();
+            input = Console.ReadLine()?.ToUpper();
+            if (input == null) continue;
             if (IsExit(input))
             {
                 break;
             }
             if (ShortcutExists(input))
             {
-                RunFunction(input);
+                input = RunFunction(input);
             }
         }
         return input;
@@ -75,16 +76,19 @@ public class Menu
         return false;
     }
 
-    private void RunFunction(string shortcut)
+    private string RunFunction(string shortcut)
     {
+        string output = "";
         foreach (MenuItem item in _menuItems)
         {
             if (item.GetShortcut() == shortcut)
             {
-                item.Function();
+                output = item.Function();
                 break;
             }
         }
+
+        return output;
     }
 
     public void AddMenuItem(MenuItem item)
