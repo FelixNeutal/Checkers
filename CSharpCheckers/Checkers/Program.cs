@@ -1,4 +1,5 @@
-﻿using CLIMenuSystem;
+﻿using System.Collections;
+using CLIMenuSystem;
 
 namespace Checkers;
 
@@ -7,7 +8,7 @@ public class Program
     public static void Main(String[] args)
     {
         Menu primaryMenu = new Menu("First Menu", MenuLevel.FIRST);
-        //primaryMenu.AddMenuItem(new MenuItem("A", "Alpha", AlphaFunction));
+        primaryMenu.AddMenuItem(new MenuItem("A", "Alpha", AlphaFunction));
         primaryMenu.AddMenuItem(new MenuItem("B", "Bravo", BravoFunction));
         primaryMenu.Run();
     }
