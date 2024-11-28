@@ -3,6 +3,8 @@ package com.example.checkers.game;
 import com.example.checkers.gameLogic.ECellType;
 
 public class Game {
+    private ECellType currentPlayer;
+    private ECellType currentOpponent;
     protected ECellType[][] board = new ECellType[][] {
             {ECellType.EmptyWhite, ECellType.PieceBlack, ECellType.EmptyWhite, ECellType.PieceBlack, ECellType.EmptyWhite, ECellType.PieceBlack, ECellType.EmptyWhite, ECellType.PieceBlack},
             {ECellType.PieceBlack, ECellType.EmptyWhite, ECellType.PieceBlack, ECellType.EmptyWhite, ECellType.PieceBlack, ECellType.EmptyWhite, ECellType.PieceBlack, ECellType.EmptyWhite},
@@ -37,5 +39,13 @@ public class Game {
 
     public ECellType[][] getBoard() {
         return board;
+    }
+
+    public boolean isCurrentPlayerPiece(int x, int y) {
+        return false;
+    }
+
+    public ECellType getCurrenPlayer() {
+        return currentPlayer;
     }
 }
