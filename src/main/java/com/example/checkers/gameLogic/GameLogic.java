@@ -3,27 +3,25 @@ package com.example.checkers.gameLogic;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GameLogic {
-    private ECellType currentPlayer = ECellType.PieceWhite;
-    private ECellType currentOpponent = ECellType.PieceBlack;
+public class GameLogic {
+//    public List<List<Cell>> getAllAvailableMoves(Cell start, int direction, ECellType[][] board) {
+//        List<List<Cell>> jumps = getAllPossibleJumps(start, direction, board);
+//        List<Cell> singleMoves = getSingleMoves(start, direction, board);
+//        List<List<Cell>> single = new ArrayList<>();
+//        if (jumps.size() >= 1) {
+//            return jumps;
+//        } else {
+//            for (Cell s : singleMoves) {
+//                List<Cell> move = new ArrayList<>();
+//                move.add(s);
+//                single.add(move);
+//            }
+//        }
+//        return single;
+//    }
 
-    public List<List<Cell>> getAllAvailableMoves(Cell start, int direction, ECellType[][] board) {
-        List<List<Cell>> jumps = getAllPossibleJumps(start, direction, board);
-        List<Cell> singleMoves = getSingleMoves(start, direction, board);
-        List<List<Cell>> single = new ArrayList<>();
-        if (jumps.size() >= 1) {
-            return jumps;
-        } else {
-            for (Cell s : singleMoves) {
-                List<Cell> move = new ArrayList<>();
-                move.add(s);
-                single.add(move);
-            }
-        }
-        return single;
-    }
-
-    public List<Cell> getSingleMoves(Cell center, int direction, ECellType[][] board) {
+    public List<Cell> getSingleMoves(Cell center, ECellType currentOpponent, ECellType[][] board) {
+        int direction = getMovementDirection(currentOpponent);
         List<Cell> singleMoves = new ArrayList<>();
         int[][] positions = {{-1, -1 * direction}, {1, -1 * direction}};
         for (int[] pos : positions) {
@@ -38,23 +36,23 @@ public abstract class GameLogic {
         return singleMoves;
     }
 
-    public List<List<Cell>> getAllPossibleJumps(Cell center, int direction, ECellType[][] board) {
+    public List<List<Cell>> getAllPossibleJumps(Cell center, ECellType[][] board, ECellType currentOpponent) {
         List<List<Cell>> possibleMoves = new ArrayList<>();
-        exploreMoves(center, new ArrayList<>(), new ArrayList<>(), possibleMoves, direction, board);
+        exploreMoves(center, new ArrayList<>(), new ArrayList<>(), possibleMoves, board, currentOpponent);
         return possibleMoves;
     }
 
-    private void exploreMoves(Cell current, List<Cell> path, List<Cell> visited, List<List<Cell>> possibleJumps, int direction, ECellType[][] board) {
+    private void exploreMoves(Cell current, List<Cell> path, List<Cell> visited, List<List<Cell>> possibleJumps, ECellType[][] board, ECellType currentOpponent) {
         visited.add(current);
         boolean isFound = false;
         // try jumping top left
-        isFound |= tryJumping(current, -1, -1, visited, path, possibleJumps, direction, board);
+        isFound |= tryJumping(current, -1, -1, visited, path, possibleJumps, board, currentOpponent);
         // try jumping top right
-        isFound |= tryJumping(current, 1, -1, visited, path, possibleJumps, direction, board);
+        isFound |= tryJumping(current, 1, -1, visited, path, possibleJumps, board, currentOpponent);
         // try jumping bottom left
-        isFound |= tryJumping(current, -1, 1, visited, path, possibleJumps, direction, board);
+        isFound |= tryJumping(current, -1, 1, visited, path, possibleJumps, board, currentOpponent);
         // try jumping bottom right
-        isFound |= tryJumping(current, 1, 1, visited, path, possibleJumps, direction, board);
+        isFound |= tryJumping(current, 1, 1, visited, path, possibleJumps, board, currentOpponent);
 
         if (!isFound && path.size() > 1) {
             possibleJumps.add(new ArrayList<>(path));
@@ -63,7 +61,7 @@ public abstract class GameLogic {
         visited.remove(current);
     }
 
-    private boolean tryJumping(Cell current, int dx, int dy, List<Cell> visited, List<Cell> path, List<List<Cell>> possibleJumps, int direction, ECellType[][] board) {
+    private boolean tryJumping(Cell current, int dx, int dy, List<Cell> visited, List<Cell> path, List<List<Cell>> possibleJumps, ECellType[][] board, ECellType currentOpponent) {
         // if end pos is empty black and mid pos is opponent piece
         // then jump is legal
         int endX = current.getX() + 2 * dx;
@@ -76,7 +74,7 @@ public abstract class GameLogic {
                 List<Cell> newPath = new ArrayList<>(path);
                 newPath.add(new Cell(midX, midY));
                 newPath.add(new Cell(endX, endY));
-                exploreMoves(new Cell(endX, endY), newPath, visited, possibleJumps, direction, board);
+                exploreMoves(new Cell(endX, endY), newPath, visited, possibleJumps, board, currentOpponent);
                 return true;
             }
         }
@@ -88,7 +86,7 @@ public abstract class GameLogic {
         return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 
-    protected boolean isLegalStart(Cell start, ECellType[][] board) {
+    protected boolean isLegalStart(Cell start, ECellType[][] board, ECellType currentPlayer) {
         return board[start.getY()][start.getX()] == currentPlayer;
     }
 
@@ -116,12 +114,12 @@ public abstract class GameLogic {
         return canMove;
     }
 
-    protected void makeSingleMove(Cell start, Cell end, List<Cell> singleMoves, ECellType[][] board) {
+    protected void makeSingleMove(Cell start, Cell end, List<Cell> singleMoves, ECellType[][] board, ECellType currentPlayer) {
         board[end.getY()][end.getX()] = currentPlayer;
         board[start.getY()][start.getX()] = ECellType.EmptyBlack;
     }
 
-    protected void makeJump(Cell start, Cell end, List<List<Cell>> jumpMoves, ECellType[][] board) {
+    protected void makeJump(Cell start, Cell end, List<List<Cell>> jumpMoves, ECellType[][] board, ECellType currentPlayer, ECellType currentOpponent) {
         board[start.getY()][start.getX()] = ECellType.EmptyBlack;
         board[end.getY()][end.getX()] = currentPlayer;
         for (List<Cell> jumpList : jumpMoves) {
@@ -137,13 +135,7 @@ public abstract class GameLogic {
         }
     }
 
-    protected void switchPlayers() {
-        ECellType temp = currentPlayer;
-        currentPlayer = currentOpponent;
-        currentOpponent = temp;
-    }
-
-    protected int getMovementDirection() {
+    protected int getMovementDirection(ECellType currentOpponent) {
         return currentOpponent == ECellType.PieceWhite ? -1 : 1;
     }
     //Win

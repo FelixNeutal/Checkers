@@ -1,9 +1,9 @@
-package com.example.checkers;
+package com.example.checkers.Views;
 
 import com.example.checkers.game.Game;
 import com.example.checkers.game.HotSeatGame;
+import com.example.checkers.gameLogic.Cell;
 import com.example.checkers.gameLogic.ECellType;
-import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -12,13 +12,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
-public class HelloApplication extends Application {
-    Circle[][] boardPieces = new Circle[8][8];
-    Game game;
+public class GameView extends Stage{
+    private Circle[][] boardPieces = new Circle[8][8];
+    private Game game;
+    private Circle previousPiece;
+    private List<Cell> previousPath;
+    private Circle currentPiece;
+    private List<Cell> currentPath;
 
-    @Override
-    public void start(Stage stage) throws IOException {
+    public void run() {
         game = new HotSeatGame();
         Rectangle[][] board;
         Group root = new Group();
@@ -28,9 +32,9 @@ public class HelloApplication extends Application {
 
         board = createBoard(root);
         createPieces(root, board);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+        this.setTitle("Hello!");
+        this.setScene(scene);
+        this.show();
     }
 
     private Rectangle[][] createBoard(Group root) {
@@ -74,27 +78,27 @@ public class HelloApplication extends Application {
                     circle = drawPiece(board[y][x], Color.RED, 23);
                     boardPieces[y][x] = circle;
                     Circle finalCircle1 = circle;
-                    circle.setOnMouseEntered(s -> {
-                        onMouseEnter(finalCircle1);
-                    });
+//                    circle.setOnMouseEntered(s -> {
+//                        onMouseEnter(finalCircle1);
+//                    });
                     circle.setOnMouseClicked(event -> onMouseClicked(finalCircle1));
                     Circle finalCircle = circle;
-                    circle.setOnMouseExited(s -> {
-                        onMouseExit(finalCircle);
-                    });
+//                    circle.setOnMouseExited(s -> {
+//                        onMouseExit(finalCircle);
+//                    });
                     root.getChildren().add(circle);
                 } else if (pieces[y][x] == ECellType.PieceWhite) {
                     circle = drawPiece(board[y][x], Color.BEIGE, 23);
                     boardPieces[y][x] = circle;
                     Circle finalCircle1 = circle;
-                    circle.setOnMouseEntered(s -> {
-                        onMouseEnter(finalCircle1);
-                    });
+//                    circle.setOnMouseEntered(s -> {
+//                        onMouseEnter(finalCircle1);
+//                    });
                     circle.setOnMouseClicked(event -> onMouseClicked(finalCircle1));
                     Circle finalCircle = circle;
-                    circle.setOnMouseExited(s -> {
-                        onMouseExit(finalCircle);
-                    });
+//                    circle.setOnMouseExited(s -> {
+//                        onMouseExit(finalCircle);
+//                    });
                     root.getChildren().add(circle);
                 }
             }
@@ -103,7 +107,17 @@ public class HelloApplication extends Application {
 
     private void onMouseClicked(Circle circle) {
         if (isCurrentPlayerPiece(circle)) {
-            //game.getPossibleMoves();
+            currentPath = game.getPossibleMoves(circleToCell(circle));
+            if (!currentPath.isEmpty()) {
+                if (previousPiece != null) {
+                    onMouseExit(previousPiece);
+                    clearPath(previousPath);
+                }
+                previousPath = currentPath;
+                previousPiece = circle;
+                onMouseEnter(circle);
+                drawPath(currentPath);
+            }
         }
     }
 
@@ -127,6 +141,14 @@ public class HelloApplication extends Application {
         }
     }
 
+    private void drawPath(List<Cell> path) {
+
+    }
+
+    private void clearPath(List<Cell> path) {
+
+    }
+
     private void makePiecesSelectable(ECellType pieceType) {
 
     }
@@ -147,7 +169,15 @@ public class HelloApplication extends Application {
         return false;
     }
 
-    public static void main(String[] args) {
-        launch();
+    private Cell circleToCell(Circle circle) {
+        Cell cell = null;
+        for (int y = 0; y < boardPieces.length; y++) {
+            for (int x = 0; x < boardPieces[0].length; x++) {
+                if (boardPieces[y][x] == circle) {
+                    cell = new Cell(x, y);
+                }
+            }
+        }
+        return cell;
     }
 }

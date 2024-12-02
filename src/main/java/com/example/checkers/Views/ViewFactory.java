@@ -19,15 +19,21 @@ public class ViewFactory {
     }
 
     public void showGameScreen() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/GameScreen.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(loader.load());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/GameScreen.fxml"));
+//        Scene scene = null;
+//        try {
+//            scene = new Scene(loader.load());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        Stage stage = new Stage();
+//        stage.setScene(scene);
+//        stage.show();
+        GameView gameView = new GameView();
+        gameView.run();
+    }
+
+    public void closeStage(Stage stage) {
+        stage.close();
     }
 }
