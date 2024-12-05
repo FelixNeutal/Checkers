@@ -49,4 +49,8 @@ public class Game {
         List<Cell> singleMoves = gameLogic.getSingleMoves(start, currentOpponent, board);
         return singleMoves;
     }
+
+    public void makeAMove(List<Cell> path) {
+
+    }
 }

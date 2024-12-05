@@ -16,6 +16,7 @@ import java.util.List;
 
 public class GameView extends Stage{
     private Circle[][] boardPieces = new Circle[8][8];
+    private Rectangle[][] board = new Rectangle[8][8];
     private Game game;
     private Circle previousPiece;
     private List<Cell> previousPath;
@@ -24,7 +25,6 @@ public class GameView extends Stage{
 
     public void run() {
         game = new HotSeatGame();
-        Rectangle[][] board;
         Group root = new Group();
         Scene scene = new Scene(root, 500, 500);
         //String css = this.getClass().getResource("Checkers.css").toExternalForm();
@@ -49,6 +49,7 @@ public class GameView extends Stage{
                 Rectangle rectangle = new Rectangle(startX + width * x, startY + height * y, width, height);
                 board[y - 1][x - 1] = rectangle;
                 rectangle.setStroke(Color.BLACK);
+                rectangle.setOnMouseClicked(event -> onMouseClicked(rectangle));
                 if (y % 2 != 0) {
                     if (x % 2 != 0) {
                         rectangle.setFill(Color.WHITE);
@@ -118,7 +119,18 @@ public class GameView extends Stage{
                 onMouseEnter(circle);
                 drawPath(currentPath);
             }
+        } else if (isLegalMove(circle)){
+            // Make a move
+            makeAMove(circle);
         }
+    }
+
+    private void onMouseClicked(Rectangle rectangle) {
+        System.out.println("Rectangle clicked");
+//        if (isLegalMove(circle)){
+//            // Make a move
+//            makeAMove(circle);
+//        }
     }
 
     private void onMouseEnter(Circle circle) {
@@ -141,12 +153,34 @@ public class GameView extends Stage{
         }
     }
 
-    private void drawPath(List<Cell> path) {
 
+
+    private void drawPath(List<Cell> path) {
+        for (Cell cell : path) {
+            if (boardPieces[cell.getY()][cell.getX()] == null) {
+                board[cell.getY()][cell.getX()].setFill(Color.GREENYELLOW);
+            }
+        }
     }
 
     private void clearPath(List<Cell> path) {
+        for (Cell cell : path) {
+            if (boardPieces[cell.getY()][cell.getX()] == null) {
+                board[cell.getY()][cell.getX()].setFill(Color.BLACK);
+            }
+        }
+    }
 
+    private void makeAMove(Circle startCircle) {
+        System.out.println(currentPath);
+        Cell start = circleToCell(startCircle);
+        boardPieces[start.getY()][start.getX()] = null;
+        Cell end = new Cell(-1, -1);
+        for (Cell c : currentPath) {
+            boardPieces[c.getY()][c.getX()] = null;
+            end = new Cell(c.getX(), c.getY());
+        }
+        boardPieces[end.getY()][start.getX()] = startCircle;
     }
 
     private void makePiecesSelectable(ECellType pieceType) {
@@ -156,6 +190,10 @@ public class GameView extends Stage{
     private Circle drawPiece(Rectangle rectangle, Color color, int radius) {
         Circle circle = new Circle(rectangle.getX() + rectangle.getWidth() / 2, rectangle.getY() + rectangle.getHeight() / 2, radius, color);
         return circle;
+    }
+
+    private boolean isLegalMove(Circle circle) {
+        return currentPath.get(currentPath.size() - 1) == circleToCell(circle);
     }
 
     private boolean isCurrentPlayerPiece(Circle c) {
