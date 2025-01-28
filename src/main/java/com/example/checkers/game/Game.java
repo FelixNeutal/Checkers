@@ -4,9 +4,12 @@ import com.example.checkers.gameLogic.Cell;
 import com.example.checkers.gameLogic.ECellType;
 import com.example.checkers.gameLogic.GameLogic;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 public class Game {
+
     private ECellType currentPlayer;
     private ECellType currentOpponent;
     private GameLogic gameLogic;
@@ -31,8 +34,17 @@ public class Game {
         return board;
     }
 
-    public boolean isCurrentPlayerPiece(int x, int y) {
-        return board[y][x] == currentPlayer;
+    public boolean isCurrentPlayerPiece(Cell cell) {
+        return board[cell.getY()][cell.getX()] == currentPlayer;
+    }
+
+    public boolean isLegalMove(Cell cell, List<List<Cell>> currentPath) {
+        for (List<Cell> c : currentPath) {
+            if (c.get(c.size() - 1).equals(cell)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ECellType getCurrenPlayer() {
@@ -45,9 +57,15 @@ public class Game {
         currentOpponent = tempPlayer;
     }
 
-    public List<Cell> getPossibleMoves(Cell start) {
-        List<Cell> singleMoves = gameLogic.getSingleMoves(start, currentOpponent, board);
-        return singleMoves;
+    public List<List<Cell>> getPossibleMoves(Cell start) {
+        List<List<Cell>> singleMoves = gameLogic.getSingleMoves(start, currentOpponent, board);
+        List<List<Cell>> jumps = gameLogic.getAllPossibleJumps(start, board, currentOpponent);
+        List<List<Cell>> allMoves = new ArrayList<>();
+        if (!jumps.isEmpty()) {
+            allMoves = jumps;
+        } else
+            allMoves = singleMoves;
+        return allMoves;
     }
 
     public void makeAMove(List<Cell> path) {

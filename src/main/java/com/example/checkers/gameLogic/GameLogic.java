@@ -1,6 +1,7 @@
 package com.example.checkers.gameLogic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameLogic {
@@ -20,16 +21,16 @@ public class GameLogic {
 //        return single;
 //    }
 
-    public List<Cell> getSingleMoves(Cell center, ECellType currentOpponent, ECellType[][] board) {
+    public List<List<Cell>> getSingleMoves(Cell center, ECellType currentOpponent, ECellType[][] board) {
         int direction = getMovementDirection(currentOpponent);
-        List<Cell> singleMoves = new ArrayList<>();
+        List<List<Cell>> singleMoves = new ArrayList<>();
         int[][] positions = {{-1, -1 * direction}, {1, -1 * direction}};
         for (int[] pos : positions) {
             int newX = center.getX() + pos[0];
             int newY = center.getY() + pos[1];
             if (isLegalCoordinate(newX, newY)) { //upper left cell
                 if (board[newY][newX] == ECellType.EmptyBlack) {
-                    singleMoves.add(new Cell(newX, newY));
+                    singleMoves.add(List.of(new Cell(newX, newY)));
                 }
             }
         }
