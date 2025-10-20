@@ -1,0 +1,16 @@
+Game has following components:
+GUI
+GUI Controller
+GameLogic
+Game
+
+GUI/Gui Controller:
+Has 2 basic views- Menu and Game.
+Menu views have mostly simple buttons and dropdown lists.
+Game view has at the top menu buttons and at the middle game area.
+Game area consists of a grid (checkers board). On top of it are circular game pieces.
+Player can select game pieces and move them.
+What info should controller and game view exhange?
+Where are pieces located. What piece is selected. What move location is selected.
+Move animation should be made here also.
+
