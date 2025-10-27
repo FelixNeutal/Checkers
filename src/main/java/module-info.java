@@ -6,5 +6,6 @@ module com.example.checkers {
     requires org.kordamp.bootstrapfx.core;
 
     opens com.example.checkers to javafx.fxml;
+    opens com.example.checkers.Controllers to javafx.fxml;
     exports com.example.checkers;
 }
