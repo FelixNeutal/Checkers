@@ -14,3 +14,7 @@ What info should controller and game view exhange?
 Where are pieces located. What piece is selected. What move location is selected.
 Move animation should be made here also.
 
+2 different click events: one for square, one for circle.
+When I click on square, what should happen?
+1. Check that it holds current players piece.
+
